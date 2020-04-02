@@ -1,4 +1,4 @@
-// taken
+// modified from Shen_Hines 1999
 create soma, priden[2], secden[2], tuftden[2], hillock, initialseg[2]
 nmyelin = 5
 create node[nmyelin], myelin[nmyelin]
@@ -115,3 +115,17 @@ topol()
 segments()
 geometry()
 memb()
+
+// setup and run test
+objectvar stim
+priden[0] stim = new IClamp(0.5)
+  stim.del = 5
+  stim.dur=5
+  stim.amp=1
+
+xopen("preliminary_view.ses")
+ 
+  v_init=-60
+  tstop=15
+  finitialize(-60)
+  run()
