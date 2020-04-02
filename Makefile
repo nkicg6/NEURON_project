@@ -1,7 +1,7 @@
 # compile and execute
 
 all: clean compile_mods test_gui
-
+# Makefile for compiling mods and running NEURON models
 .PHONY: all clean compile_mods test_gui
 
 clean:
