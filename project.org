@@ -9,7 +9,11 @@
 #+ARCHIVE: daily_archive.org::datetree/* From master todo
 * Goals
 ** 2020-04-01
-*** TODO adapt model so you are recording from the AIS after injecting at the dendrite
+*** DONE adapt model so you are recording from the AIS after injecting at the dendrite
+    CLOSED: [2020-04-14 Tue 17:28]
+** TODO 2020-04-14
+Setup a jupyter notebook and start translating the model to it. 
+
 
 * References
   bibliographystyle:apalike
