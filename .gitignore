@@ -3,3 +3,4 @@ mitral_1999
 x86_64
 *.ipynb
 .ipynb_checkpoints
+__pycache__
