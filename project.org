@@ -8,13 +8,18 @@
 #+LATEX_HEADER: \renewcommand{\bibsection}
 #+ARCHIVE: daily_archive.org::datetree/* From master todo
 * Goals
-** 2020-04-01
+** DONE 2020-04-01
+   CLOSED: [2020-04-15 Wed 16:41]
 *** DONE adapt model so you are recording from the AIS after injecting at the dendrite
     CLOSED: [2020-04-14 Tue 17:28]
-** TODO 2020-04-14
-Setup a jupyter notebook and start translating the model to it. 
+** DONE 2020-04-14
+   CLOSED: [2020-04-15 Wed 16:39]
+Setup a notebook and start modeling the cell
+** week of 2020-04-19
+Add real channels to AIS and simulate runs with different lengths. 
+https://www.neuron.yale.edu/neuron/static/py_doc/programming/python.html see function:
 
-
+=nrn_load_dll()=
 * References
   bibliographystyle:apalike
   bibliography:~/Dropbox/bibliography/zotero-library.bib
