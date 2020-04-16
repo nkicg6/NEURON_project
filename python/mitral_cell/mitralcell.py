@@ -22,16 +22,16 @@ class MitralCell():
         self.passive = [self.dend] # ref to passive components
 
         self.all = self.active + self.passive
-        self.dend.connect(self.soma(0.5))
+        self.dend.connect(self.soma(1))
         self.ais.connect(self.soma(0.5))
-        self.soma.L = 12.6157
-        self.soma.diam = 12.6157
+        self.soma.L = 20
+        self.soma.diam = 20
         self.soma.nseg = 3
         self.dend.L = 200
-        self.dend.diam = 1
+        self.dend.diam = 5
         self.dend.nseg = 15
         self.ais.L = 25
-        self.ais.diam = 0.5
+        self.ais.diam = 1
         self.ais.nseg = 9
 
     def _setup_biophysics(self):
