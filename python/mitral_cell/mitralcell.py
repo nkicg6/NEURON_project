@@ -57,15 +57,12 @@ class MitralCell():
     def add_stim(self, stim_dict):
         self.stim_dict = stim_dict
         self.stim_what = self.get_section(stim_dict['thing_to_stim'])
-
-        print(f"adding current clamp stimulation to {self.stim_what}")
         self.stim = h.IClamp(self.stim_what(stim_dict['loc']))
         self.stim.delay = stim_dict['delay']
         self.stim.dur = stim_dict['dur']
         self.stim.amp = stim_dict['amp']
 
     def run(self):
-        print(f'running with parameters: {self.stim_dict}')
         t = h.Vector().record(h._ref_t)
         h.finitialize(self.stim_dict['rmp']*mv)
         h.continuerun(self.stim_dict['run_dur']*ms)
