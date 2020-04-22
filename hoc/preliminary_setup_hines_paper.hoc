@@ -77,7 +77,6 @@ proc geometry() {local i
 	define_shape()
 }
 
-
 //Wei's two electrodes expriments show active channels in the
 //distal portion  of the primary dendrite. This set up a hotspot there.
 //using Zachs na and k channels with density similarities to his paper
@@ -123,7 +122,7 @@ priden[0] stim = new IClamp(0.5)
   stim.dur=10
   stim.amp=0.8
 
-xopen("preliminary_view.ses")
+//xopen("preliminary_view.ses")
  
   v_init=-60
   tstop=15
