@@ -30,22 +30,22 @@ class MitralCell:
         self._setup_biophysics()
 
     def _make_ais(self):
-        self.proximal_ais = h.Section(name="proximal_ais", cell=self)
-        self.distal_ais = h.Section(name="distal_ais", cell=self)
+        self.proximal_ais = h.Section(name="proximal_ais")
+        self.distal_ais = h.Section(name="distal_ais")
 
     def _make_myelinated_segments(self):
         for n in range(self.n_myelinated_segs):
             self.myelinated_segs_list.append(
-                h.Section(name=f"myelin_seg_{n}", cell=self)
+                h.Section(name=f"myelin_seg_{n}")
             )
 
     def _make_nodes(self):
         for n in range(self.n_nodes):
-            self.nodes_list.append(h.Section(name=f"node_{n}", cell=self))
+            self.nodes_list.append(h.Section(name=f"node_{n}"))
 
     def _define_morphology(self):
-        self.soma = h.Section(name="soma", cell=self)
-        self.dend = h.Section(name="dend", cell=self)
+        self.soma = h.Section(name="soma")
+        self.dend = h.Section(name="dend")
         self._make_ais()
         self._make_myelinated_segments()
         self._make_nodes()
@@ -95,7 +95,7 @@ class MitralCell:
             section.insert("pas")
             section.Ra = 70
             section.cm = 1.2
-            section.g_pas = 1 / 30000
+            section.g_pas = 1/30000
             section.e_pas = -65
 
         for section in self.active:
@@ -112,11 +112,11 @@ class MitralCell:
         for myelin_section in self.myelinated_segs_list:
             for myelin_seg in myelin_section:
                 myelin_seg.cm = 0.012
-                myelin_seg.g_pas = 1 / 100000
+                myelin_seg.g_pas = 1/100000
 
         for node_section in self.nodes_list:
             for node_seg in node_section:
-                node_seg.g_pas = 1 / 1000
+                node_seg.g_pas = 1/1000
                 node_seg.gbar_na = 10115
                 node_seg.gbar_kd = 100
 
