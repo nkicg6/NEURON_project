@@ -7,7 +7,6 @@ from neuron.units import mV as mv
 h.load_file("stdrun.hoc")
 h.nrn_load_dll("../../hoc")
 
-
 class MitralCell:
     def __init__(self, uid, nodes):
         self._uid = uid
@@ -25,6 +24,8 @@ class MitralCell:
         self.node_nseg = 3
         self.node_diameter = 1
         self.ais_length = 30
+        self.experiment_temperature = 36
+        h.celsius = self.experiment_temperature
         self._define_morphology()
         self._setup_morphology()
         self._setup_biophysics()
@@ -127,8 +128,11 @@ class MitralCell:
         self.stim.delay = stim_dict["delay"]
         self.stim.dur = stim_dict["dur"]
         self.stim.amp = stim_dict["amp"]
+        self.experiment_temperature = stim_dict["experiment_temperature"]
+
 
     def run(self):
+        h.celsius = self.experiment_temperature
         t = h.Vector().record(h._ref_t)
         h.finitialize(self.stim_dict["rmp"] * mv)
         h.continuerun(self.stim_dict["run_dur"] * ms)
