@@ -33,7 +33,7 @@ NEURON {
 }
 
 PARAMETER {
-	gbar = 258.272   	(pS/um2)	: 0.12 mho/cm2
+	gbar = 258.272   	(pS/um2)	: 0.12 mho/cm2 
 	vshift = 0	(mV)		: voltage shift (affects all)
 								
 	thm1  = -70.3833	(mV)		: v 1/2 for act		(-42)

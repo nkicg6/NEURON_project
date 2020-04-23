@@ -15,11 +15,18 @@
 ** DONE 2020-04-14
    CLOSED: [2020-04-15 Wed 16:39]
 Setup a notebook and start modeling the cell
-** week of 2020-04-19
+** DONE week of 2020-04-19
+   CLOSED: [2020-04-23 Thu 09:31]
 Add real channels to AIS and simulate runs with different lengths. 
 https://www.neuron.yale.edu/neuron/static/py_doc/programming/python.html see function:
 
 =nrn_load_dll()=
+** TODO week of 2020-04-27
+distribute ions along AIS
+https://www.neuron.yale.edu/neuron/static/py_doc/modelspec/programmatic.html
+
+use ions from [[file:~/PDFs/Zbili_Debanne_2020.pdf][Zbili et al. 2020]] modelDB: https://senselab.med.yale.edu/modeldb/showmodel?model=263053&file=/zbili_debanne/myelinated_axon_1.hoc#tabs-2
+
 * References
   bibliographystyle:apalike
   bibliography:~/Dropbox/bibliography/zotero-library.bib

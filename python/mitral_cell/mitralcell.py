@@ -5,7 +5,6 @@ from neuron.units import mV as mv
 
 
 h.load_file("stdrun.hoc")
-h.nrn_load_dll("../../hoc")
 
 class MitralCell:
     def __init__(self, uid, nodes):
@@ -130,7 +129,6 @@ class MitralCell:
         self.stim.amp = stim_dict["amp"]
         self.experiment_temperature = stim_dict["experiment_temperature"]
 
-
     def run(self):
         h.celsius = self.experiment_temperature
         t = h.Vector().record(h._ref_t)
@@ -148,4 +146,5 @@ class MitralCell:
             raise IndexError("couldn't find it")
 
     def __repr__(self):
-        return f"MitralCell[{self._uid}]"
+        str_rep = f"MitralCell[{self._uid}] with {self.n_nodes} nodes of ranvier, {self.n_myelinated_segs} myelinated segments, and a {self.ais_length}\u03BCm AIS."
+        return str_rep
