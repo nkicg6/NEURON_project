@@ -13,20 +13,21 @@
 Using preliminary EM data, I counted the approximate number of myelin sheath wraps and the thickness of the sheath and axon. These values were uniform for this modeling exercise. 
 
 Zbili et al. 2020 modeled the myelin membrane using the =extracellular= model from Neuron 7.6 in the internodes of the model. This adds a layer of RC circuit to the internodes. Passive conductance of G_{my} and C_{my} depends on the amount of myelinated wraps, but they assume that G and C for myelin are equal to G and C for axon. However, since each myelin "wrap" is a bilayer, C_{my} and G_{my}, each wrap contributes to halving both values (C_{my}= C_{ax}/2 and G_{my}= G_{ax}/2). 
-Using the G-ratio (g), $g = \dfrac{radius_{ax}}{radius_{ax}+ periaxonal space + myelin sheath}$
+Using the G-ratio (g), $ g = \dfrac{radius_{ax}}{radius_{ax}+ periaxonal space + myelin sheath} $
 
 I will calculate these values directly from my EM images to calculate the capacitance and resistance of the internodes. 
-They used a value of 15.6 myelin wraps, giving a C_{my} = C_{ax}/32 and G_{my} = G_{ax}/32 .
+They used a value of 15.6 myelin wraps, giving a C_{my} = C_{ax}/32 and G_{my} = G_{ax}/32.
+
 ** Ion channel distribution
 
 As described in Zbili et al. 2020, dendrites, soma and axon hillock contain Na_{v}1.2, K_{v} (delay-rectifier), and leak channels. AIS contains Na_{v}1.2, Na_{v}1.6, K_{v} (delay-rectifier), and leak channels. I will add K_{v}1.2 channels if possible, and use channels described in [[file:~/PDFs/Fadool_Pedarzani_2011.PDF][Fadool et al 2011]] (K_{v}1.3) as well if I can implement them. 
-
 
 ** Nodes of Ranvier
 
 To simulate realistic node lengths, I will draw samples from my experimentally gathered distribution. Voltage gated ion channels will be kept constant based on the length of each node. 
 
 * AIS experiments
+
 1. AP threshold based on length of AIS monotonically increasing by 0.5\mu{}m step size from minimum experimentally measured to maximum experimentally measured in control animals (constant channel density based on Hu. et al. 2009).
 2. AP threshold for =x= samples of AIS lengths taken from control data (can be compared to the same experiment for naris occluded animals).
 3. Change the distribution of voltage gated potassium and sodium channels along some length AIS to see effects on initiation. 
@@ -59,10 +60,14 @@ Add real channels to AIS and simulate runs with different lengths.
 https://www.neuron.yale.edu/neuron/static/py_doc/programming/python.html see function:
 =nrn_load_dll()=
 
-** TODO week of 2020-04-27
+** In-progress week of 2020-04-27
 distribute ions along AIS
 https://www.neuron.yale.edu/neuron/static/py_doc/modelspec/programmatic.html
 
 use ions from [[file:~/PDFs/Zbili_Debanne_2020.pdf][Zbili et al. 2020]] modelDB: https://senselab.med.yale.edu/modeldb/showmodel?model=263053&file=/zbili_debanne/myelinated_axon_1.hoc#tabs-2
 use [[file:~/PDFs/Hu_Shu_2009.pdf][Hu...Shu 2009]] for ion channel distributions
+** TODO finish biophysics functions
+   SCHEDULED: <2020-04-26 Sun>
+See TODO's in [[file:python/mitral_cell/mitralcell.py][mitralcell.py]]
+Set initial parameters based on https://senselab.med.yale.edu/ModelDB/showmodel?model=263053&file=/zbili_debanne/myelinated_axon_1.hoc#tabs-2
 
