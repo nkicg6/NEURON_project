@@ -1,5 +1,5 @@
 
-COMMEN
+COMMENT
 // MODIFIED FROM Hu et al. 2009 by NMG
 na.mod
 
