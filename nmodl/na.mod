@@ -1,6 +1,6 @@
 
-COMMENT
-
+COMMEN
+// MODIFIED FROM Hu et al. 2009 by NMG
 na.mod
 
 Sodium channel, Hodgkin-Huxley style kinetics.  

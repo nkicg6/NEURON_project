@@ -1,6 +1,6 @@
 
 COMMENT
-
+// MODIFIED FROM Hu et al. 2009 by NMG
 kv.mod
 
 Potassium channel, Hodgkin-Huxley style kinetics
