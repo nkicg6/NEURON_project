@@ -34,8 +34,7 @@ class MitralCell:
         self.setup_biophysics()
 
     def _make_ais(self):
-        self.proximal_ais = h.Section(name="proximal_ais")
-        self.distal_ais = h.Section(name="distal_ais")
+        self.ais = h.Section(name="ais")
 
     def _make_myelinated_segments(self):
         for n in range(self.n_myelinated_segs):
@@ -51,15 +50,14 @@ class MitralCell:
         self._make_ais()
         self._make_myelinated_segments()
         self._make_nodes()
-        self.active = [self.soma, self.proximal_ais, self.distal_ais, *self.nodes_list]
+        self.active = [self.soma, self.ais, *self.nodes_list]
         self.passive = [self.dend, *self.myelinated_segs_list]
         self.all_segs = self.active + self.passive
 
     def _setup_morphology(self):
         self.dend.connect(self.soma, 0, 1)
-        self.proximal_ais.connect(self.soma, 1)
-        self.distal_ais.connect(self.proximal_ais, 1)
-        self.myelinated_segs_list[0].connect(self.distal_ais, 1)
+        self.ais.connect(self.soma,1)
+        self.myelinated_segs_list[0].connect(self.ais, 1)
         # connect all myelinated segments and nodes
         for n, _ in enumerate(self.myelinated_segs_list):
             try:
@@ -81,21 +79,14 @@ class MitralCell:
         self.dend.L = 200
         self.dend.diam = 5
         self.dend.nseg = 15
-        self.proximal_ais.L = (self.ais_length / 3) * 2
-        self.distal_ais.L = self.ais_length / 3
-        assert (
-            self.proximal_ais.L + self.distal_ais.L == self.ais_length
-        ), "AIS length error!"
-        self.proximal_ais.diam = 1.5
-        self.distal_ais.diam = 1
-        self.proximal_ais.nseg = 9
-        self.distal_ais.nseg = 3
+        self.ais.L = self.ais_length
+        self.ais.diam = 1.5
+        self.ais.nseg = 15
 
     def setup_biophysics(self):
         """add all channels and passive properties"""
         self._uniform_passive_biophysics()
-        self._proximal_ais_biophysics()
-        self._distal_ais_biophysics()
+        self._ais_biophysics()
         self._soma_biophysics()
         self._node_biophysics()
         self._dendrite_biophysics()
@@ -130,15 +121,10 @@ class MitralCell:
         self.dend.gbar_kv=10
         self.dend.ek=-90
 
-    def _proximal_ais_biophysics(self):
-        self.proximal_ais.insert("na12")
-        self.proximal_ais.insert("na16")
-        self.proximal_ais.insert("kv")
-
-    def _distal_ais_biophysics(self):
-        self.distal_ais.insert("na16")
-        self.distal_ais.insert("kv")
-        self.distal_ais.insert("na12")
+    def _ais_biophysics(self):
+        self.ais.insert("na12")
+        self.ais.insert("na16")
+        self.ais.insert("kv")
 
     def _myelinated_segments_biophysics(self):
         for myelin_section in self.myelinated_segs_list:
@@ -152,6 +138,9 @@ class MitralCell:
             for node_seg in node_section:
                 node_seg.g_pas = 1 / 1000
                 node_seg.gbar_na16 = 10115
+
+    def channel_gradient():
+        pass
 
     def add_stim(self, stim_dict):
         self.stim_dict = stim_dict

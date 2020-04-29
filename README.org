@@ -63,7 +63,8 @@ Add real channels to AIS and simulate runs with different lengths.
 https://www.neuron.yale.edu/neuron/static/py_doc/programming/python.html see function:
 =nrn_load_dll()=
 
-** In-progress week of 2020-04-27
+** DONE week of 2020-04-27
+   CLOSED: [2020-04-29 Wed 16:33]
 distribute ions along AIS
 https://www.neuron.yale.edu/neuron/static/py_doc/modelspec/programmatic.html
 
