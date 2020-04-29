@@ -111,6 +111,7 @@ class MitralCell:
             section.e_pas = -69.5
 
     def _soma_biophysics(self):
+        """setup biophysics for soma. All segments are equal for now."""
         self.soma.insert("na12")
         self.soma.insert("kv")
         self.soma.cm = 1
@@ -120,23 +121,14 @@ class MitralCell:
         self.soma.gbar_kv = 20
         self.soma.ek = -90
 
-
-    def _myelinated_segments_biophysics(self):
-        for myelin_section in self.myelinated_segs_list:
-            for myelin_seg in myelin_section:
-                myelin_seg.cm = 0.012
-                myelin_seg.g_pas = 1 / 100000
-
     def _dendrite_biophysics(self):
+        """setup biophysics for dendrites. All segments are equal for now."""
         self.dend.insert("na12")
         self.dend.insert("kv")
-
-    def _node_biophysics(self):
-        for node_section in self.nodes_list:
-            node_section.insert("na16")
-            for node_seg in node_section:
-                node_seg.g_pas = 1 / 1000
-                node_seg.gbar_na16 = 10115
+        self.dend.gbar_na12 = 80
+        self.dend.ena=60
+        self.dend.gbar_kv=10
+        self.dend.ek=-90
 
     def _proximal_ais_biophysics(self):
         self.proximal_ais.insert("na12")
@@ -147,6 +139,19 @@ class MitralCell:
         self.distal_ais.insert("na16")
         self.distal_ais.insert("kv")
         self.distal_ais.insert("na12")
+
+    def _myelinated_segments_biophysics(self):
+        for myelin_section in self.myelinated_segs_list:
+            for myelin_seg in myelin_section:
+                myelin_seg.cm = 0.012
+                myelin_seg.g_pas = 1 / 100000
+
+    def _node_biophysics(self):
+        for node_section in self.nodes_list:
+            node_section.insert("na16")
+            for node_seg in node_section:
+                node_seg.g_pas = 1 / 1000
+                node_seg.gbar_na16 = 10115
 
     def add_stim(self, stim_dict):
         self.stim_dict = stim_dict
