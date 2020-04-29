@@ -46,6 +46,9 @@ I will measure:
 The node of Ranvier length will be sampled from my experimentally measured node values in the lateral olfactory tract, and these experiments will be repeated /x/ times. 
 Internode length will likely be kept constant, as I do not have good data on internode length distributions of mitral cells but will search the literature for a good substitute. 
 
+* For external recording
+[[file:~/PDFs/Parasuram_Diwakar_2016.pdf][Parasuram...Diwakar 2016]] for extracellular recording
+
 * Goals
 ** DONE 2020-04-01
    CLOSED: [2020-04-15 Wed 16:41]

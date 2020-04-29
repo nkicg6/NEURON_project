@@ -10,7 +10,6 @@ from neuron.units import mV as mv
 
 h.load_file("stdrun.hoc")
 
-
 class MitralCell:
     def __init__(self, uid, nodes):
         self._uid = uid
@@ -94,13 +93,13 @@ class MitralCell:
 
     def setup_biophysics(self):
         """add all channels and passive properties"""
-        _uniform_passive_biophysics()
-        _proximal_ais_biophysics()
-        _distal_ais_biophysics()
-        _soma_biophysics()
-        _node_biophysics()
-        _dendrite_biophysics()
-        _myelinated_segments_biophysics()
+        self._uniform_passive_biophysics()
+        self._proximal_ais_biophysics()
+        self._distal_ais_biophysics()
+        self._soma_biophysics()
+        self._node_biophysics()
+        self._dendrite_biophysics()
+        self._myelinated_segments_biophysics()
 
     def _uniform_passive_biophysics(self):
         """adds universal passive properties/leak properties. can be updated individually per segment as well. Must be called first."""
@@ -114,6 +113,13 @@ class MitralCell:
     def _soma_biophysics(self):
         self.soma.insert("na12")
         self.soma.insert("kv")
+        self.soma.cm = 1
+        self.soma.Ra = 150
+        self.soma.gbar_na12 = 80
+        self.soma.ena = 60
+        self.soma.gbar_kv = 20
+        self.soma.ek = -90
+
 
     def _myelinated_segments_biophysics(self):
         for myelin_section in self.myelinated_segs_list:
@@ -121,16 +127,13 @@ class MitralCell:
                 myelin_seg.cm = 0.012
                 myelin_seg.g_pas = 1 / 100000
 
-    def _node_biophysics(self):
-        for section in self.nodes_list:
-            section.insert("na16")
-
     def _dendrite_biophysics(self):
         self.dend.insert("na12")
         self.dend.insert("kv")
 
     def _node_biophysics(self):
         for node_section in self.nodes_list:
+            node_section.insert("na16")
             for node_seg in node_section:
                 node_seg.g_pas = 1 / 1000
                 node_seg.gbar_na16 = 10115
