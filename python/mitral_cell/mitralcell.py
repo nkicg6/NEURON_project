@@ -11,6 +11,7 @@ from neuron.units import mV as mv
 
 h.load_file("stdrun.hoc")
 
+
 class MitralCell:
     def __init__(self, uid, nodes):
         self._uid = uid
@@ -29,8 +30,8 @@ class MitralCell:
         self.node_diameter = 1
         self.ais_length = 30
         self.experiment_temperature = 36
-        self.gnav12_dist = {"min":0, "max":2000, "reverse":True}
-        self.gnav16_dist =  {"min":0, "max":2000, "reverse":False}
+        self.gnav12_dist = {"min": 0, "max": 2000, "reverse": True}
+        self.gnav16_dist = {"min": 0, "max": 2000, "reverse": False}
         h.celsius = self.experiment_temperature
         self._define_morphology()
         self._setup_morphology()
@@ -59,7 +60,7 @@ class MitralCell:
 
     def _setup_morphology(self):
         self.dend.connect(self.soma, 0, 1)
-        self.ais.connect(self.soma,1)
+        self.ais.connect(self.soma, 1)
         self.myelinated_segs_list[0].connect(self.ais, 1)
         # connect all myelinated segments and nodes
         for n, _ in enumerate(self.myelinated_segs_list):
@@ -120,9 +121,9 @@ class MitralCell:
         self.dend.insert("na12")
         self.dend.insert("kv")
         self.dend.gbar_na12 = 80
-        self.dend.ena=60
-        self.dend.gbar_kv=10
-        self.dend.ek=-90
+        self.dend.ena = 60
+        self.dend.gbar_kv = 10
+        self.dend.ek = -90
 
     def _ais_biophysics(self):
         """setup biophysics for ais. Channel distributions will be defined as gradients along segments."""
@@ -147,17 +148,17 @@ class MitralCell:
     def _node_biophysics(self):
         for node_section in self.nodes_list:
             node_section.insert("na16")
-            #node_section.insert("kd")
+            # node_section.insert("kd")
             for node_seg in node_section:
                 node_seg.g_pas = 0.0000333
-                #node_seg.Ra = 150
+                # node_seg.Ra = 150
                 node_seg.gbar_na16 = 2000
-                node_seg.ena=60
-                #node_seg.gbar_kd = 0.00855
-                #node_seg.ek = -90
+                node_seg.ena = 60
+                # node_seg.gbar_kd = 0.00855
+                # node_seg.ek = -90
                 node_seg.e_pas = -38.3
 
-    def simple_ais_channel_gradient(self,gmap):
+    def simple_ais_channel_gradient(self, gmap):
         """temporary method. Uses a linear increase or decrease of channel density based on nseg. Need to make it more realistic based on Hu et al. 2009 Figure 5"""
         a = np.linspace(gmap["min"], gmap["max"], self.ais.nseg)
         if gmap["reverse"] == True:
