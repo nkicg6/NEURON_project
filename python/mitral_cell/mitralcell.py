@@ -1,6 +1,7 @@
 # channel mod definitions from Hu et al. 2009 doi:10.1038/nn.2359
 # TODO! edit channel biophysics based on https://senselab.med.yale.edu/ModelDB/showmodel?model=263053&file=/zbili_debanne/myelinated_axon_1.hoc#tabs-2
-# TODO! figure out how to structure AIS biophysics
+# TODO! add Kd channel
+# TODO! Firing is odd (no bursting). Figure out why, it must be channel kinetics.
 
 import numpy as np
 from neuron import h
@@ -28,6 +29,8 @@ class MitralCell:
         self.node_diameter = 1
         self.ais_length = 30
         self.experiment_temperature = 36
+        self.gnav12_dist = {"min":0, "max":2000, "reverse":True}
+        self.gnav16_dist =  {"min":0, "max":2000, "reverse":False}
         h.celsius = self.experiment_temperature
         self._define_morphology()
         self._setup_morphology()
@@ -122,9 +125,18 @@ class MitralCell:
         self.dend.ek=-90
 
     def _ais_biophysics(self):
+        """setup biophysics for ais. Channel distributions will be defined as gradients along segments."""
         self.ais.insert("na12")
         self.ais.insert("na16")
         self.ais.insert("kv")
+        na12_gradient = self.simple_ais_channel_gradient(self.gnav12_dist)
+        na16_gradient = self.simple_ais_channel_gradient(self.gnav16_dist)
+        for ind, seg in enumerate(self.ais):
+            seg.gbar_na16 = na16_gradient[ind]
+        for ind, seg in enumerate(self.ais):
+            seg.gbar_na12 = na12_gradient[ind]
+
+        self.ais.gbar_kv = 100
 
     def _myelinated_segments_biophysics(self):
         for myelin_section in self.myelinated_segs_list:
@@ -135,12 +147,22 @@ class MitralCell:
     def _node_biophysics(self):
         for node_section in self.nodes_list:
             node_section.insert("na16")
+            #node_section.insert("kd")
             for node_seg in node_section:
-                node_seg.g_pas = 1 / 1000
-                node_seg.gbar_na16 = 10115
+                node_seg.g_pas = 0.0000333
+                #node_seg.Ra = 150
+                node_seg.gbar_na16 = 2000
+                node_seg.ena=60
+                #node_seg.gbar_kd = 0.00855
+                #node_seg.ek = -90
+                node_seg.e_pas = -38.3
 
-    def channel_gradient():
-        pass
+    def simple_ais_channel_gradient(self,gmap):
+        """temporary method. Uses a linear increase or decrease of channel density based on nseg. Need to make it more realistic based on Hu et al. 2009 Figure 5"""
+        a = np.linspace(gmap["min"], gmap["max"], self.ais.nseg)
+        if gmap["reverse"] == True:
+            return a[::-1]
+        return a
 
     def add_stim(self, stim_dict):
         self.stim_dict = stim_dict
