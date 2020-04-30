@@ -141,6 +141,7 @@ class MitralCell:
 
     def _myelinated_segments_biophysics(self):
         for myelin_section in self.myelinated_segs_list:
+            myelin_section.Ra = 150
             for myelin_seg in myelin_section:
                 myelin_seg.cm = 0.012
                 myelin_seg.g_pas = 1 / 100000
@@ -148,14 +149,15 @@ class MitralCell:
     def _node_biophysics(self):
         for node_section in self.nodes_list:
             node_section.insert("na16")
-            # node_section.insert("kd")
+            node_section.insert("kd")
+            node_section.Ra = 150
+            node_section.cm = 1
             for node_seg in node_section:
                 node_seg.g_pas = 0.0000333
-                # node_seg.Ra = 150
                 node_seg.gbar_na16 = 2000
                 node_seg.ena = 60
-                # node_seg.gbar_kd = 0.00855
-                # node_seg.ek = -90
+                node_seg.gbar_kd = 0.00855
+                node_seg.ek = -90
                 node_seg.e_pas = -38.3
 
     def simple_ais_channel_gradient(self, gmap):
