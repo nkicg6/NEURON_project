@@ -31,6 +31,7 @@ class MitralCell:
         self.ais_length = 30
         self.experiment_temperature = 36
         # channel kinetics and conductances
+        self.resting_potential = -65
         self.ais_kv_gbar = 100
         self.node_gbar_kd = 0.00855
         self.gnav12_dist = {"min": 0, "max": 2000, "reverse": True}
@@ -107,7 +108,7 @@ class MitralCell:
             section.Ra = 150
             section.cm = 1.0
             section.g_pas = 0.0000333
-            section.e_pas = -65.0
+            section.e_pas = self.resting_potential
 
     def _soma_biophysics(self):
         """setup biophysics for soma. All segments are equal for now."""
