@@ -24,16 +24,19 @@ class MitralCell:
         self.myelinated_segs_list = []
         self.node_length = 1.5
         self.myelinated_segment_length = 100
-        self.myelin_diameter = 4
+        self.myelin_diameter = 2
         self.myelin_nseg = 10
         self.node_nseg = 3
         self.node_diameter = 1
         self.ais_length = 30
         self.experiment_temperature = 36
         # channel kinetics and conductances
+        self.n_myelin_wraps = 16
         self.resting_potential = -65
         self.ais_kv_gbar = 100
         self.node_gbar_kd = 0.00855
+        self.node_gbar_na16 = 3000
+        self.node_gbar_kv = 100
         self.gnav12_dist = {"min": 0, "max": 2000, "reverse": True}
         self.gnav16_dist = {"min": 0, "max": 2500, "reverse": False}
         h.celsius = self.experiment_temperature
@@ -147,6 +150,14 @@ class MitralCell:
 
     def _myelinated_segments_biophysics(self):
         for myelin_section in self.myelinated_segs_list:
+            myelin_section.insert("extracellular")
+            myelin_section.xraxial[0] = 120663
+            myelin_section.xraxial[1] = 10000000000
+            myelin_section.xg[0] = 0.0000333 / (self.n_myelin_wraps * 2)
+            myelin_section.xg[1] = 10000000000
+            myelin_section.xc[0] = 1 / (self.n_myelin_wraps * 2)
+            myelin_section.xc[1] = 0.0000000001
+            myelin_section.e_extracellular = 0
             myelin_section.Ra = 150
             for myelin_seg in myelin_section:
                 myelin_seg.cm = 0.012
@@ -161,10 +172,10 @@ class MitralCell:
             node_section.cm = 1
             for node_seg in node_section:
                 node_seg.g_pas = 0.0000333
-                node_seg.gbar_na16 = 2000
+                node_seg.gbar_na16 = self.node_gbar_na16
                 node_seg.ena = 60
                 node_seg.gbar_kd = self.node_gbar_kd
-                node_seg.gbar_kv = 100
+                node_seg.gbar_kv = self.node_gbar_kv
                 node_seg.ek = -90
                 node_seg.e_pas = -38.3
 
