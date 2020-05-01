@@ -23,15 +23,18 @@ class MitralCell:
         self.nodes_list = []
         self.myelinated_segs_list = []
         self.node_length = 1.5
-        self.myelinated_segment_length = 200
+        self.myelinated_segment_length = 100
         self.myelin_diameter = 4
-        self.myelin_nseg = 15
+        self.myelin_nseg = 10
         self.node_nseg = 3
         self.node_diameter = 1
         self.ais_length = 30
         self.experiment_temperature = 36
+        # channel kinetics and conductances
+        self.ais_kv_gbar = 100
+        self.node_gbar_kd = 0.00855
         self.gnav12_dist = {"min": 0, "max": 2000, "reverse": True}
-        self.gnav16_dist = {"min": 0, "max": 2000, "reverse": False}
+        self.gnav16_dist = {"min": 0, "max": 2500, "reverse": False}
         h.celsius = self.experiment_temperature
         self._define_morphology()
         self._setup_morphology()
@@ -89,6 +92,7 @@ class MitralCell:
 
     def setup_biophysics(self):
         """add all channels and passive properties"""
+        print("updating biophysics")
         self._uniform_passive_biophysics()
         self._ais_biophysics()
         self._soma_biophysics()
@@ -103,7 +107,7 @@ class MitralCell:
             section.Ra = 150
             section.cm = 1.0
             section.g_pas = 0.0000333
-            section.e_pas = -69.5
+            section.e_pas = -65.0
 
     def _soma_biophysics(self):
         """setup biophysics for soma. All segments are equal for now."""
@@ -130,14 +134,15 @@ class MitralCell:
         self.ais.insert("na12")
         self.ais.insert("na16")
         self.ais.insert("kv")
+        self.ais.insert("kd")
         na12_gradient = self.simple_ais_channel_gradient(self.gnav12_dist)
         na16_gradient = self.simple_ais_channel_gradient(self.gnav16_dist)
         for ind, seg in enumerate(self.ais):
             seg.gbar_na16 = na16_gradient[ind]
+            seg.gbar_kd = 0
+            seg.gbar_kv = self.ais_kv_gbar
         for ind, seg in enumerate(self.ais):
             seg.gbar_na12 = na12_gradient[ind]
-
-        self.ais.gbar_kv = 100
 
     def _myelinated_segments_biophysics(self):
         for myelin_section in self.myelinated_segs_list:
@@ -150,13 +155,15 @@ class MitralCell:
         for node_section in self.nodes_list:
             node_section.insert("na16")
             node_section.insert("kd")
+            node_section.insert("kv")
             node_section.Ra = 150
             node_section.cm = 1
             for node_seg in node_section:
                 node_seg.g_pas = 0.0000333
                 node_seg.gbar_na16 = 2000
                 node_seg.ena = 60
-                node_seg.gbar_kd = 0.00855
+                node_seg.gbar_kd = self.node_gbar_kd
+                node_seg.gbar_kv = 100
                 node_seg.ek = -90
                 node_seg.e_pas = -38.3
 
@@ -177,6 +184,7 @@ class MitralCell:
         self.experiment_temperature = stim_dict["experiment_temperature"]
 
     def run(self):
+        self.setup_biophysics()
         h.celsius = self.experiment_temperature
         t = h.Vector().record(h._ref_t)
         h.finitialize(self.stim_dict["rmp"] * mv)
