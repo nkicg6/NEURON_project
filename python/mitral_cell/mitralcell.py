@@ -75,7 +75,6 @@ class MitralCell:
                 self.nodes_list[n].connect(self.myelinated_segs_list[n], 1)
                 self.myelinated_segs_list[n + 1].connect(self.nodes_list[n], 1)
             except:
-                print("Connections done")
                 pass
         for myelin, node in zip(self.myelinated_segs_list, self.nodes_list):
             node.L = self.node_length
@@ -96,7 +95,6 @@ class MitralCell:
 
     def setup_biophysics(self):
         """add all channels and passive properties"""
-        print("updating biophysics")
         self._uniform_passive_biophysics()
         self._ais_biophysics()
         self._soma_biophysics()
@@ -195,13 +193,19 @@ class MitralCell:
         self.stim.amp = stim_dict["amp"]
         self.experiment_temperature = stim_dict["experiment_temperature"]
 
+    def hoc_vec_to_array(self, get_id):
+        arr = self.stim_dict["recording_vectors"][get_id]
+        return np.asarray(arr).copy()
+
     def run(self):
         self.setup_biophysics()
         h.celsius = self.experiment_temperature
         t = h.Vector().record(h._ref_t)
         h.finitialize(self.stim_dict["rmp"] * mv)
         h.continuerun(self.stim_dict["run_dur"] * ms)
-        self.stim_dict["t"] = np.asarray(t)
+        for k in self.stim_dict['recording_vectors'].keys():
+            self.stim_dict['recording_vectors'][k] = self.hoc_vec_to_array(k)
+        self.stim_dict["recording_vectors"]["t"] = np.asarray(t)
         return self.stim_dict
 
     def get_section(self, thing):
