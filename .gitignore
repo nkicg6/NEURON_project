@@ -1,7 +1,6 @@
 mitral_1999
 .DS_Store
 x86_64
-*.ipynb
 .ipynb_checkpoints
 __pycache__
 HuEtAl2009
