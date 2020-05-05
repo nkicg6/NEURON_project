@@ -5,3 +5,4 @@ x86_64
 .ipynb_checkpoints
 __pycache__
 HuEtAl2009
+/python/.mypy_cache/
