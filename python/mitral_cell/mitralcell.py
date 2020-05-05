@@ -203,8 +203,8 @@ class MitralCell:
         t = h.Vector().record(h._ref_t)
         h.finitialize(self.stim_dict["rmp"] * mv)
         h.continuerun(self.stim_dict["run_dur"] * ms)
-        for k in self.stim_dict['recording_vectors'].keys():
-            self.stim_dict['recording_vectors'][k] = self.hoc_vec_to_array(k)
+        for k in self.stim_dict["recording_vectors"].keys():
+            self.stim_dict["recording_vectors"][k] = self.hoc_vec_to_array(k)
         self.stim_dict["recording_vectors"]["t"] = np.asarray(t)
         return self.stim_dict
 

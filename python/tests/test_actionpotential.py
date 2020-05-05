@@ -5,10 +5,11 @@ import numpy as np
 
 from mitral_cell import actionpotential as ap
 
+
 def test_ap_find_peak():
-    arr =np.zeros(20)
+    arr = np.zeros(20)
     arr[10] = 15
-    inds =  ap.ap_find_peak(arr)
+    inds = ap.ap_find_peak(arr)
     assert isinstance(inds, int)
     assert inds == 10
     two_peak = np.zeros(40)
@@ -35,6 +36,7 @@ def test_ap_calculate_amplitude():
     with pytest.raises(AssertionError):
         ap.ap_calculate_amplitude(arr, 30, 65)
 
+
 def test_ap_batch_amplitude():
     arr = np.zeros(20)
     arr[10] = 15
@@ -49,16 +51,20 @@ def test_ap_batch_amplitude():
 
 
 def test_ap_normalize_to_0():
-    assert 1 ==0
+    assert 1 == 0
+
 
 def test_ap_normalized_half_max():
-    assert 1 ==0
+    assert 1 == 0
+
 
 def test_ap_simple_fwhm_inds():
-    assert 1 ==0
+    assert 1 == 0
+
 
 def test_ap_calculate_fwhm():
     assert 1 == 0
+
 
 def test_ap_batch_fwhm():
     assert 1 == 0
