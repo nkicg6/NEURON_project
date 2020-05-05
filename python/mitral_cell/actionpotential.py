@@ -22,8 +22,8 @@ def ap_batch_amplitude(list_of_traces: list, rmp: float) -> list:
     """
     amps = []
     for experiment in list_of_traces:
-        inds = ap_find_peak(experiment)
         try:
+            inds = ap_find_peak(experiment)
             amp = ap_calculate_amplitude(experiment, inds, rmp)
             amps.append(amp)
         except AssertionError:
