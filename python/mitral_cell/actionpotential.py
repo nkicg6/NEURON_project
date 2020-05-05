@@ -69,7 +69,7 @@ def ap_batch_fwhm(list_of_times: list, list_of_traces: list, rmp: float) -> list
             norm_y = ap_normalize_to_0(experiment, rmp)
             half_max = ap_normalized_half_max(norm_y, ind)
             first, second = ap_simple_fwhm_inds(norm_y, half_max)
-            fwhm = ap_calc_fwhm(time, first, second)
+            fwhm = ap_calculate_fwhm(time, first, second)
             fwhms.append(fwhm)
         except AssertionError:
             fwhms.append(0)
