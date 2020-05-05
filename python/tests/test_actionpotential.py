@@ -46,3 +46,19 @@ def test_ap_batch_amplitude():
     assert ap.ap_batch_amplitude(with_no_peak, -65) == [80, 80, 0]
     with_empty_arr = [arr, arr2, arr3, np.asarray([])]
     assert ap.ap_batch_amplitude(with_empty_arr, -65) == [80, 80, 0, 0]
+
+
+def test_ap_normalize_to_0():
+    assert 1 ==0
+
+def test_ap_normalized_half_max():
+    assert 1 ==0
+
+def test_ap_simple_fwhm_inds():
+    assert 1 ==0
+
+def test_ap_calculate_fwhm():
+    assert 1 == 0
+
+def test_ap_batch_fwhm():
+    assert 1 == 0
