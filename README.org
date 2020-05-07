@@ -11,8 +11,9 @@
 
 * Implementation
 
-**Experimental and subject to dramatic changes!**
-**I make no claim of correctness**
+*Experimental and subject to dramatic changes!*
+
+*I make no claim of correctness*
 
   I am attempting to model Mitral cell myelinated axons. My model was originally based on [[https://journals.physiology.org/doi/full/10.1152/jn.1999.82.6.3006][Shen...Hines 1999]], but I have adapted the basic parts of that model to Python using an object oriented style to simplify experimental control and data analysis.
 
