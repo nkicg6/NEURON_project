@@ -1,4 +1,4 @@
-# action potential analysis
+# action potential analysis for simulations
 import numpy as np
 import scipy.signal as s
 
@@ -74,3 +74,9 @@ def ap_batch_fwhm(list_of_times: list, list_of_traces: list, rmp: float) -> list
         except AssertionError:
             fwhms.append(0)
     return fwhms
+
+
+def ap_batch_amp_and_fwhm(time_vectors: list, data_vectors: list, rmp: float) -> tuple:
+    amp = ap_batch_amplitude(data_vectors, rmp)
+    fwhms = ap_batch_fwhm(time_vectors, data_vectors, rmp)
+    return amp, fwhms
