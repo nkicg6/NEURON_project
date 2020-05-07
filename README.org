@@ -7,71 +7,18 @@
 #+LATEX_HEADER: \usepackage[round]{natbib}
 #+LATEX_HEADER: \renewcommand{\bibsection}
 #+ARCHIVE: daily_archive.org::datetree/* From master todo
+
+
 * Implementation
-  While originally based on [[file:~/PDFs/Shen_Hines_1999.pdf][Shen...Hines 1999]], I have adapted the model to Python using an object oriented style to simplify experimental control and data analysis. I used a number of channels and techniques described very well by [[file:~/PDFs/Zbili_Debanne_2020.pdf][Zbili et al. 2020]] (which were based on channels from [[file:~/PDFs/Hu_Shu_2009.pdf][Hu et al. 2009]]). 
-** Myelinated internodes
-Using preliminary EM data, I counted the approximate number of myelin sheath wraps and the thickness of the sheath and axon. These values were uniform for this modeling exercise. 
+  While originally based on [[https://journals.physiology.org/doi/full/10.1152/jn.1999.82.6.3006][Shen...Hines 1999]], I have adapted the basic parts of that model to Python using an object oriented style to simplify experimental control and data analysis. 
 
-Zbili et al. 2020 modeled the myelin membrane using the =extracellular= model from Neuron 7.6 in the internodes of the model. This adds a layer of RC circuit to the internodes. Passive conductance of G_{my} and C_{my} depends on the amount of myelinated wraps, but they assume that G and C for myelin are equal to G and C for axon. However, since each myelin "wrap" is a bilayer, C_{my} and G_{my}, each wrap contributes to halving both values (C_{my}= C_{ax}/2 and G_{my}= G_{ax}/2). 
-Using the G-ratio (g), $ g = \dfrac{radius_{ax}}{radius_{ax}+ periaxonal space + myelin sheath} $
+I used a number of channels and techniques described very well by [[https://www.frontiersin.org/articles/10.3389/fncel.2020.00040/full][Zbili et al. 2020]] (which were based on channels from [[https://www.nature.com/articles/nn.2359][Hu et al. 2009]])
 
-I will calculate these values directly from my EM images to calculate the capacitance and resistance of the internodes. 
-They used a value of 15.6 myelin wraps, giving a C_{my} = C_{ax}/32 and G_{my} = G_{ax}/32.
-
-** Ion channel distribution
-
-As described in Zbili et al. 2020, dendrites, soma and axon hillock contain Na_{v}1.2, K_{v} (delay-rectifier), and leak channels. AIS contains Na_{v}1.2, Na_{v}1.6, K_{v} (delay-rectifier), and leak channels. I will add K_{v}1.2 channels if possible, and use channels described in [[file:~/PDFs/Fadool_Pedarzani_2011.PDF][Fadool et al 2011]] (K_{v}1.3) as well if I can implement them. 
-
-** Nodes of Ranvier
-
-To simulate realistic node lengths, I will draw samples from my experimentally gathered distribution. Voltage gated ion channels will be kept constant based on the length of each node. 
+For more on the basic implementation (including myelin sheaths, ion channel distributions, and nodes of Ranvier), see [[file:python/notebooks/presentation_slideshow.ipynb][this notebook]]. 
 
 * AIS experiments
+For examples of experiments, please see the final presentation [[file:python/notebooks/NEURON_class_presentation202007.ipynb][here]]. 
 
-1. AP threshold based on length of AIS monotonically increasing by 0.5\mu{}m step size from minimum experimentally measured to maximum experimentally measured in control animals (constant channel density based on Hu. et al. 2009).
-2. AP threshold for =x= samples of AIS lengths taken from control data (can be compared to the same experiment for naris occluded animals).
-3. Change the distribution of voltage gated potassium and sodium channels along some length AIS to see effects on initiation. 
-
-** questions to address
-- In all experiments, should "spikes" be the point at which dv/dt > 50, or should it be the peak?
-- Measure broadening and spike area? see p4 last paragraph. 
-
-* node of Ranvier experiments
-
-I will measure: 
-1. conduction velocity (time of peak at AIS to time of peak at node /n/ )
-2. amplitude of AP at node /n/
-3. AP width at node /n/ along /n/ nodes of Ranvier. 
-
-The node of Ranvier length will be sampled from my experimentally measured node values in the lateral olfactory tract, and these experiments will be repeated /x/ times. 
-Internode length will likely be kept constant, as I do not have good data on internode length distributions of mitral cells but will search the literature for a good substitute. 
-
-* For external recording
-[[file:~/PDFs/Parasuram_Diwakar_2016.pdf][Parasuram...Diwakar 2016]] for extracellular recording
-
-* Goals
-** DONE 2020-04-01
-   CLOSED: [2020-04-15 Wed 16:41]
-*** DONE adapt model so you are recording from the AIS after injecting at the dendrite
-    CLOSED: [2020-04-14 Tue 17:28]
-** DONE 2020-04-14
-   CLOSED: [2020-04-15 Wed 16:39]
-Setup a notebook and start modeling the cell
-** DONE week of 2020-04-19
-   CLOSED: [2020-04-23 Thu 09:31]
-Add real channels to AIS and simulate runs with different lengths. 
-https://www.neuron.yale.edu/neuron/static/py_doc/programming/python.html see function:
-=nrn_load_dll()=
-
-** DONE week of 2020-04-27
-   CLOSED: [2020-04-29 Wed 16:33]
-distribute ions along AIS
-https://www.neuron.yale.edu/neuron/static/py_doc/modelspec/programmatic.html
-
-use ions from [[file:~/PDFs/Zbili_Debanne_2020.pdf][Zbili et al. 2020]] modelDB: https://senselab.med.yale.edu/modeldb/showmodel?model=263053&file=/zbili_debanne/myelinated_axon_1.hoc#tabs-2
-use [[file:~/PDFs/Hu_Shu_2009.pdf][Hu...Shu 2009]] for ion channel distributions
-** TODO finish biophysics functions
-   SCHEDULED: <2020-04-26 Sun>
-See TODO's in [[file:python/mitral_cell/mitralcell.py][mitralcell.py]]
-Set initial parameters based on https://senselab.med.yale.edu/ModelDB/showmodel?model=263053&file=/zbili_debanne/myelinated_axon_1.hoc#tabs-2
-
+* Model testing and data anlysis
+I have written some helper AP analysis functions, (so far) just a set of functions for AP amplitude and to measure FWHM for AP shape. Those functions are in [[file:python/mitral_cell/actionpotential.py][actionpotential.py]]. I have also written [[file:python/tests/][tests]] for many of these functions which can be run with [[https://docs.pytest.org/en/latest/contents.html][pytest]]. 
+I am also working on tests for the main =MitralCell= class, to ensure that experimental changes are accurately reflected in the model as I think they are. I have not implemented those yet, but it will involve using =cell.ais.psection()= and verifying the output is as expected after changing. 
