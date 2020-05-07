@@ -10,15 +10,32 @@
 
 
 * Implementation
-  While originally based on [[https://journals.physiology.org/doi/full/10.1152/jn.1999.82.6.3006][Shen...Hines 1999]], I have adapted the basic parts of that model to Python using an object oriented style to simplify experimental control and data analysis. 
+
+**Experimental and subject to dramatic changes!**
+**I make no claim of correctness**
+
+  I am attempting to model Mitral cell myelinated axons. My model was originally based on [[https://journals.physiology.org/doi/full/10.1152/jn.1999.82.6.3006][Shen...Hines 1999]], but I have adapted the basic parts of that model to Python using an object oriented style to simplify experimental control and data analysis.
 
 I used a number of channels and techniques described very well by [[https://www.frontiersin.org/articles/10.3389/fncel.2020.00040/full][Zbili et al. 2020]] (which were based on channels from [[https://www.nature.com/articles/nn.2359][Hu et al. 2009]])
+
+The base class is called [[file:python/mitral_cell/mitralcell.py][MitralCell]], and is constructed with a unique ID and the number of nodes to construct. This class is not yet well documented (and likely never will be), so refer to the code for details.
+
+*This [[file:python/notebooks/presentation_slideshow.ipynb][this notebook]] contains explanations of some of the parameters and reasoning behind parts of the model.*
+
+
+** ion channels
+Ion channels were downloaded from https://senselab.med.yale.edu/ModelDB/showmodel?model=263053#tabs-2, and compiled with this [[file:Makefile][Makefile]] in the =nmodl= directory. The channels must be manually loaded at the top of the controller script (see: https://www.neuron.yale.edu/phpBB/viewtopic.php?f=2&p=18501&sid=8dff1ac9d4bbc4a34fb50d42d8b55fa4#p18501 or the example notebook). 
+
+** installation and usage
+This was put together as a proof of concept for a class, and will be developed further elsewhere. As such, it is not yet =pip=-installable. I used basic =sys.path= manipulations from my notebooks to import and use [[file:python/mitral_cell/mitralcell.py][MitralCell]] and [[file:python/mitral_cell/actionpotential.py][actionpotential.py]]. See the notebooks for the within-script path modifications necessary to use them. 
+
+These experiments were run on Mac OS in a python 3.8 virtual environment with NEURON accessible via the =PATH= and =PYTHONPATH=. For instructions on how to configure python virtual environments to use NEURON on Mac OS, see my post: https://nickgeorge.net/programming/NEURON-neuronal-modeling-software-and-python-with-virtual-environments/
 
 For more on the basic implementation (including myelin sheaths, ion channel distributions, and nodes of Ranvier), see [[file:python/notebooks/presentation_slideshow.ipynb][this notebook]]. 
 
 * AIS experiments
 For examples of experiments, please see the final presentation [[file:python/notebooks/NEURON_class_presentation202007.ipynb][here]]. 
 
-* Model testing and data anlysis
+* Model testing and data analysis
 I have written some helper AP analysis functions, (so far) just a set of functions for AP amplitude and to measure FWHM for AP shape. Those functions are in [[file:python/mitral_cell/actionpotential.py][actionpotential.py]]. I have also written [[file:python/tests/][tests]] for many of these functions which can be run with [[https://docs.pytest.org/en/latest/contents.html][pytest]]. 
 I am also working on tests for the main =MitralCell= class, to ensure that experimental changes are accurately reflected in the model as I think they are. I have not implemented those yet, but it will involve using =cell.ais.psection()= and verifying the output is as expected after changing. 
